@@ -1,19 +1,12 @@
 import { Notice, Plugin } from "obsidian";
-import { GrillingSettingsTab } from "./settings";
-import { BARBECUE_VIEW_TYPE, BarbecueView } from "./view";
+import { type CharacterSheetPluginSettings, DEFAULT_SETTINGS } from "./settings/character-sheet-plugin-settings";
+import { CharacterSheetPluginSettingsTab } from "./settings/character-sheet-plugin-settings-tab";
+import { EXAMPLE_VIEW_ICON, EXAMPLE_VIEW_TYPE, ExampleView } from "./view/example/example";
 
-interface MyPluginSettings {
-  whatToGrill: string;
-}
+export default class CharacterSheetPlugin extends Plugin {
+  settings: CharacterSheetPluginSettings | undefined;
 
-const DEFAULT_SETTINGS: Partial<MyPluginSettings> = {
-  whatToGrill: "essentially nothing",
-};
-
-export default class MyPlugin extends Plugin {
-  settings: MyPluginSettings | undefined;
-
-  async fetchSettings() {
+  async loadSettings() {
     this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
   }
 
@@ -22,29 +15,33 @@ export default class MyPlugin extends Plugin {
   }
 
   async onload() {
-    await this.fetchSettings();
+    await this.loadSettings();
+    this.addSettingTab(new CharacterSheetPluginSettingsTab(this.app, this));
 
-    this.addRibbonIcon("beef", "Time for barbecue", () => {
-      new Notice(`Grilling ${this.settings?.whatToGrill}`);
+    this.registerView(EXAMPLE_VIEW_TYPE, (leaf) => new ExampleView(leaf));
+
+    this.addRibbonIcon("shield-plus", "Check Settings", () => {
+      new Notice(`Example Output for Settings: ${this.settings?.pluginName}`);
     });
 
-    this.addSettingTab(new GrillingSettingsTab(this.app, this));
-
-    this.registerView(BARBECUE_VIEW_TYPE, (leaf) => new BarbecueView(leaf));
-    this.addRibbonIcon("book-user", "Open Contacts", () => {
-      this.app.workspace.detachLeavesOfType(BARBECUE_VIEW_TYPE);
-
-      const rightLeaf = this.app.workspace.getRightLeaf(false);
-      if (rightLeaf != null) {
-        rightLeaf.setViewState({
-          type: BARBECUE_VIEW_TYPE,
-        });
-
-        this.app.workspace.revealLeaf(rightLeaf);
-      } else {
-        throw new Error("Could not create leaf");
-      }
+    this.addRibbonIcon(EXAMPLE_VIEW_ICON, "Open Example View", () => {
+      this.openExampleView();
     });
+  }
+
+  private openExampleView() {
+    this.app.workspace.detachLeavesOfType(EXAMPLE_VIEW_TYPE);
+
+    const rightLeaf = this.app.workspace.getRightLeaf(false);
+    if (rightLeaf != null) {
+      rightLeaf.setViewState({
+        type: EXAMPLE_VIEW_TYPE,
+      });
+
+      this.app.workspace.revealLeaf(rightLeaf);
+    } else {
+      throw new Error("Could not create leaf");
+    }
   }
 
   onunload() {}
