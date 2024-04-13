@@ -1,11 +1,10 @@
 {
-  "id": "sample-plugin",
-  "name": "Sample Plugin",
-  "version": "1.0.0",
+  "id": "5e-character-sheet-plugin",
+  "name": "5e Character Sheet Plugin",
+  "version": "0.0.1",
   "minAppVersion": "0.15.0",
-  "description": "Demonstrates some of the capabilities of the Obsidian API.",
-  "author": "Obsidian",
-  "authorUrl": "https://obsidian.md",
-  "fundingUrl": "https://obsidian.md/pricing",
+  "description": "Adds the possibility to show a dnd 5e character sheet instead of plain markdown",
+  "author": "Nils Hoffmann",
+  "authorUrl": "https://github.com/theSmokingFrog/obsidian-experiments-plugin",
   "isDesktopOnly": false
 }
