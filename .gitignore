@@ -1,22 +1,21 @@
-# vscode
-.vscode 
-
-# Intellij
+# development env
+.vscode
 *.iml
 .idea
 
 # npm
 node_modules
 
-# Don't include the compiled main.js file in the repo.
-# They should be uploaded to GitHub releases instead.
+# build
 main.js
-
-# Exclude sourcemaps
-*.map
+*.js.map
+styles.css
+dist
 
 # obsidian
 data.json
-
-# Exclude macOS Finder (System Explorer) View States
 .DS_Store
+rollup.config-dev.js
+webpack.dev.js
+
+.env
